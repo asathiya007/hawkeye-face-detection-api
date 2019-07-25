@@ -59,4 +59,28 @@ app.post("/register", (req, res) => {
         .catch(err => res.status(500).json("error registering new user"));
 });
 
+app.post("/signin", (req, res) => {
+    const {email, password} = req.body; 
+
+    db.select("*").from("login").where("email", "=", email)
+        .then(user => {
+            if (user[0]) {
+                if (bcrypt.compareSync(password, user[0].hash)) {
+                    db.select("*").from("users").where("email", "=", email)
+                        .then(user => {
+                            if (user[0]) {
+                                res.json(user[0]);
+                            } else {
+                                res.status(400).json("no user with that email exists");
+                            }
+                        })
+                        .catch(err => res.status(500).json("error fetching user data"));
+                }
+            } else {
+                res.status(400).json("invalid login credentials");
+            }
+        })
+        .catch(err => res.status(500).json("error verifying user data"));
+});
+
 app.listen(3001);
