@@ -80,7 +80,21 @@ app.post("/signin", (req, res) => {
                 res.status(400).json("invalid login credentials");
             }
         })
-        .catch(err => res.status(500).json("error verifying user data"));
+        .catch(err => res.status(500).json("error fetching user data"));
+});
+
+app.get("/profile/:id", (req, res) => {
+    const {id} = req.params;
+
+    db.select("*").from("users").where("id", "=", id)
+        .then(user => {
+            if (user[0]) {
+                res.json(user[0]);
+            } else {
+                res.status(400).json("no user with that id exists");
+            }
+        })
+        .catch(err => res.status(500).json("error fetching user data"));
 });
 
 app.listen(3001);
