@@ -60,7 +60,7 @@ app.post("/register", (req, res) => {
             .then(trx.commit)
             .catch(trx.rollback);
     })
-        .catch(err => res.status(500).json("error registering new user"));
+        .catch(err => res.status(400).json("user with that email already exists"));
 });
 
 app.post("/signin", (req, res) => {
@@ -79,10 +79,12 @@ app.post("/signin", (req, res) => {
                             if (user[0]) {
                                 res.json(user[0]);
                             } else {
-                                res.status(400).json("no user with that email exists");
+                                res.status(404).json("user data associated with that email not found");
                             }
                         })
                         .catch(err => res.status(500).json("error fetching user data"));
+                } else {
+                    res.status(400).json("invalid login credentials");
                 }
             } else {
                 res.status(400).json("invalid login credentials");
