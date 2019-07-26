@@ -97,4 +97,20 @@ app.get("/profile/:id", (req, res) => {
         .catch(err => res.status(500).json("error fetching user data"));
 });
 
-app.listen(3001);
+app.put("/image", (req, res) => {
+    const {id} = req.body; 
+    
+    db("users").where("id", "=", id)
+        .increment("entries", 1)
+        .returning("entries")
+        .then(count => {
+            if (count[0]) {
+                res.json(count[0]);
+            } else {
+                res.status(400).json("no user with that id exists");
+            }
+        })
+        .catch(err => res.status(500).json("error incrementing user entry count"));
+});
+
+app.listen(3001, () => console.log("server running on port 3001"));
