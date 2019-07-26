@@ -27,6 +27,10 @@ app.get("/", (req, res) => {
 app.post("/register", (req, res) => {
     const {name, email, password} = req.body;
 
+    if (name.trim() === "" || email.trim() === "" || password.trim() === "") {
+        return res.status(400).json("incomplete data, cannot register new user");
+    }
+
     const hash = bcrypt.hashSync(password);
 
     db.transaction(trx => {
@@ -61,6 +65,10 @@ app.post("/register", (req, res) => {
 
 app.post("/signin", (req, res) => {
     const {email, password} = req.body; 
+
+    if (email.trim() === "" || password.trim() === "") {
+        return res.status(400).json("incomplete credentials, cannot sign in to existing user account");
+    }
 
     db.select("*").from("login").where("email", "=", email)
         .then(user => {
