@@ -7,10 +7,8 @@ const bodyParser = require("body-parser");
 const db = knex({
     client: 'pg',
     connection: {
-        host: '127.0.0.1',
-        user: '',
-        password: '',
-        database: 'hawkeye'
+        connectionString: process.env.DATABASE_URL,
+        ssl: true
     }
 });
 
@@ -123,4 +121,4 @@ app.put("/image", (req, res) => {
         .catch(err => res.status(500).json("error incrementing user entry count"));
 });
 
-app.listen(3001, () => console.log("server running on port 3001"));
+app.listen(process.env.PORT || 3001, () => console.log(`server running on port ${process.env.PORT}`));
