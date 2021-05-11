@@ -3,4 +3,4 @@ HawkEye Face Detection uses AI and computer vision to detect faces in photos tha
 
 Check it out here: https://hawkeye-asathiya.herokuapp.com/. Enjoy!
 
-Register your own account or log in with ['john.doe@gmail.com', 'johndoe'] to give it a try!
+Log in with guest credentials ['john.doe@gmail.com', 'johndoe'] or register your own account to give it a try!
